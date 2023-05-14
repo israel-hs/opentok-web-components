@@ -5,20 +5,13 @@ import "@vonage/video-subscribers/video-subscribers.js";
 import { User } from "./lib/types";
 import { addMember } from "./api/callApi";
 
-import { useLocation } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
-// import { useLocation } from "react-router";
-
-function WebCall({ userId, someKey }: User & { someKey: number }) {
-  // const location = useLocation();
-  // const navigate = useNavigate();
+function WebCall({ userId }: User) {
   // Get references to Web Components
   const publisher = useRef(null) as any;
   const subscribers = useRef(null) as any;
   // const screenshare = useRef(null);
 
   // These values normally come from the backend in a production application, but for this demo, they are hardcoded
-
   const apiKey = "45828062";
   const sessionId =
     "2_MX40NTgyODA2Mn5-MTY4NDA4Nzk3ODM5MX5pbjcray8rNEpMckZoUG9oSEcvWUs4dmF-UH5-";
@@ -35,8 +28,6 @@ function WebCall({ userId, someKey }: User & { someKey: number }) {
 
   useEffect(() => {
     console.log(userId);
-    console.log(location);
-    console.log("someKey", someKey);
 
     const addMemberToCall = async () => {
       try {
@@ -59,7 +50,7 @@ function WebCall({ userId, someKey }: User & { someKey: number }) {
     publisher.current.token = token;
     subscribers.current.session = session;
     subscribers.current.token = token;
-  }, [someKey]);
+  }, []);
 
   return (
     <div className="App">
