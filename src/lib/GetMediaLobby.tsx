@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import type { Member, Members } from "./types";
 import { getMembers, removeMember } from "../api/callApi";
 import { Link } from "react-router-dom";
+import { basePath } from "../config";
 
 /**
  * This component is meant to wrap a Video component and initially
@@ -69,7 +70,7 @@ const Lobby: React.FC<LobbyProps> = ({ memberId, linkTo }) => {
           ) : (
             <div>There are no connected members</div>
           )}
-          <Link to={`/${linkTo}`} reloadDocument>
+          <Link to={`/${basePath}/${linkTo}`} reloadDocument>
             <button>{`Go to ${linkTo}`}</button>
           </Link>
         </>

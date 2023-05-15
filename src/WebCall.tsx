@@ -2,21 +2,16 @@ import React, { useRef, useEffect } from "react";
 
 import "@vonage/video-publisher/video-publisher.js";
 import "@vonage/video-subscribers/video-subscribers.js";
-import { User } from "./lib/types";
-import { addMember } from "./api/callApi";
+import { Members, User } from "./lib/types";
+import { addMember, getMembers } from "./api/callApi";
+
+import { apiKey, sessionId, token } from "./config";
 
 function WebCall({ userId }: User) {
   // Get references to Web Components
   const publisher = useRef(null) as any;
   const subscribers = useRef(null) as any;
   // const screenshare = useRef(null);
-
-  // These values normally come from the backend in a production application, but for this demo, they are hardcoded
-  const apiKey = "45828062";
-  const sessionId =
-    "2_MX40NTgyODA2Mn5-MTY4NDA4Nzk3ODM5MX5pbjcray8rNEpMckZoUG9oSEcvWUs4dmF-UH5-";
-  const token =
-    "T1==cGFydG5lcl9pZD00NTgyODA2MiZzaWc9NDIzODc5NjRjMGE1OWZkMGE3NzYyMWViY2MxNmU3NDlkOTAzMGVmNTpzZXNzaW9uX2lkPTJfTVg0ME5UZ3lPREEyTW41LU1UWTROREE0TnprM09ETTVNWDVwYmpjcmF5OHJORXBNY2tab1VHOW9TRWN2V1VzNGRtRi1VSDUtJmNyZWF0ZV90aW1lPTE2ODQwOTQ3Mzgmbm9uY2U9MC4zMjUwMzI5NDYxNzQxMTE1JnJvbGU9cHVibGlzaGVyJmV4cGlyZV90aW1lPTE2ODQxODExMzg=";
 
   const toggleVideo = () => {
     publisher.current.toggleVideo();
@@ -29,15 +24,26 @@ function WebCall({ userId }: User) {
   useEffect(() => {
     console.log(userId);
 
-    const addMemberToCall = async () => {
-      try {
-        await addMember(userId);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    if (userId) {
+      const addMemberToCall = async () => {
+        try {
+          await addMember(userId);
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
-    addMemberToCall();
+      addMemberToCall();
+    }
+
+    // let interval: number;
+    // if (!connectionReady) {
+    //   interval = setInterval(async () => {
+    //     const { members }: Members = await getMembers();
+    //     console.log("members", members);
+    //     if (members.length > 1) setConnectionReady(true);
+    //   }, 1500);
+    // }
 
     const OT = (window as any).OT;
 
@@ -50,6 +56,18 @@ function WebCall({ userId }: User) {
     publisher.current.token = token;
     subscribers.current.session = session;
     subscribers.current.token = token;
+    /*
+    if (connectionReady) {
+      subscribers.current.session = session;
+      subscribers.current.token = token;
+    }
+    */
+
+    // return () => {
+    //   if (interval) {
+    //     clearInterval(interval);
+    //   }
+    // };
   }, []);
 
   return (
